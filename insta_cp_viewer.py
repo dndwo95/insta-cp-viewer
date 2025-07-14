@@ -26,13 +26,18 @@ period = st.selectbox("기간 선택", ["최근 7일", "최근 30일"])
 
 # 분석 버튼
 if st.button("🔍 분석 시작"):
-    # 더미 데이터 생성 (실제 크롤링 기능은 후속 구현 필요)
+    # 입력된 계정 처리
     accounts_list = [acc.strip() for acc in accounts.split(",") if acc.strip()]
+    if not accounts_list:
+        st.warning("최소 1개 이상의 계정을 입력해주세요.")
+        st.stop()
+
+    # 더미 데이터 생성
     data = {
         "순위": [1, 2, 3, 4, 5],
         "제품명": ["라탄 조명", "무소음 벽시계", "플러피 러그", "4단 수납장", "LED 무드등"],
         "조회수": [245000, 198000, 157000, 139000, 122000],
-        "계정": accounts_list,
+        "계정": [accounts_list[0]] * 5,
         "영상 링크": [
             "https://instagram.com/reel/abc1",
             "https://instagram.com/reel/abc2",
@@ -41,6 +46,7 @@ if st.button("🔍 분석 시작"):
             "https://instagram.com/reel/abc5"
         ]
     }
+
     df = pd.DataFrame(data)
     st.subheader("📊 분석 결과 (예시 데이터)")
     st.dataframe(df)
